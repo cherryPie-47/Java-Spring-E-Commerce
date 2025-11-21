@@ -1,16 +1,20 @@
 package com.ecommerce.project.payload;
 
 import com.ecommerce.project.model.Product;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class ProductDTO {
+    @Schema(description = "Product ID", example = "101")
     private Long productId;
 
+    @Schema(description = "Product name for product you wish to create/update/delete", example = "iPhone 10")
     @NotBlank(message = "Product name cannot be blank")
     @Size(min = 1, message = "Product name cannot be blank")
     private String productName;
 
+    @Schema(description = "Description for product you wish to create/update/delete", example = "99% out of the box iPhone 10, comes with authentic charge and 3 months insurance")
     @NotBlank(message = "Description cannot be blank")
     @Size(min = 1, message = "Description cannot be blank")
     private String description;
