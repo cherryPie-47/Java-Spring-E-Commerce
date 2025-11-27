@@ -30,6 +30,14 @@ public class UserInfoResponse {
         this.roles = roles;
     }
 
+    public UserInfoResponse(Long id, String jwtToken, ResponseCookie jwtCookie, String username, List<String> roles) {
+        this.id = id;
+        this.jwtToken = jwtToken;
+        this.jwtCookie = jwtCookie;
+        this.username = username;
+        this.roles = roles;
+    }
+
     public Long getId() {
         return id;
     }

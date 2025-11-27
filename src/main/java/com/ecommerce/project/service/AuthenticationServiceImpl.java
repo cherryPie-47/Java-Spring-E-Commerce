@@ -71,11 +71,12 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
+        String jwtToken = jwtUtils.generateTokenFromUsername(userDetails.getUsername());
         ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
-
         List<String> roles = userDetails.getAuthorities().stream().map(grantedAuthority -> grantedAuthority.getAuthority()).toList();
 
         return new UserInfoResponse(userDetails.getId(),
+                jwtToken,
                 jwtCookie,
                 userDetails.getUsername(),
                 roles);

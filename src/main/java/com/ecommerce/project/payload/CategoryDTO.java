@@ -1,10 +1,14 @@
 package com.ecommerce.project.payload;
 
 import com.ecommerce.project.model.Category;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 // This is a wrapper class to contain all categoryDTO in a list
 public class CategoryDTO {
+    @Schema(description = "Category ID", example = "101")
     private Long categoryId;
+
+    @Schema(description = "Category name for the category you wish to create/update/delete", example = "Phone")
     private String categoryName;
 
     public CategoryDTO() {
