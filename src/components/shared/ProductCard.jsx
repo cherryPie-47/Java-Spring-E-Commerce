@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TiShoppingCart } from "react-icons/ti";
 import ProductViewModal from "./ProductViewModal";
-
+import truncateString from "../../utils/truncateString";
 function ProductCard({ product }) {
 	const { productId, productName, image, description, quantity, price, discount, specialPrice } =
 		product;
@@ -36,11 +36,11 @@ function ProductCard({ product }) {
 					}}
 					className="text-lg font-semibold mb-2 cursor-pointer"
 				>
-					{productName}
+					{truncateString(productName, 50)}
 				</h2>
 
 				<div className="min-h-20 max-h-20">
-					<p className="text-gray-600 text-sm">{description}</p>
+					<p className="text-gray-600 text-sm">{truncateString(description, 100)}</p>
 				</div>
 
 				<div className="flex items-center justify-between">
