@@ -2,6 +2,9 @@ import { useState } from "react";
 import { TiShoppingCart } from "react-icons/ti";
 import ProductViewModal from "./ProductViewModal";
 import truncateString from "../../utils/truncateString";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../store/actions";
+import toast from "react-hot-toast";
 function ProductCard({ product, about = false }) {
 	const { productId, productName, image, description, quantity, price, discount, specialPrice } =
 		product;
@@ -10,12 +13,17 @@ function ProductCard({ product, about = false }) {
 	// We cannot set the initial value to be null, as ProductViewModal component will use this value to deconstruct product field
 	const [selectedViewProduct, setSelectedViewProduct] = useState("");
 	const isAvailable = quantity !== 0 ? true : false;
+	const dispatch = useDispatch();
 
 	const handleViewProduct = (product) => {
 		if (!about) {
 			setSelectedViewProduct(product);
 			setOpenProductViewModal(true);
 		}
+	};
+
+	const handleAddToCart = (cartItem) => {
+		dispatch(addToCart(cartItem, 1, toast));
 	};
 	return (
 		<div className="rounded-lg shadow-xl overflow-hidden transition-shadow duration-300">
@@ -66,7 +74,9 @@ function ProductCard({ product, about = false }) {
 						)}
 						<button
 							disable={isAvailable.toString() || buttonLoader}
-							onClick={() => {}}
+							onClick={() => {
+								handleAddToCart(product);
+							}}
 							className={`bg-blue-500 ${
 								isAvailable ? "opacity-100 hover:bg-blue-600 cursor-pointer" : "opacity-70"
 							} 
