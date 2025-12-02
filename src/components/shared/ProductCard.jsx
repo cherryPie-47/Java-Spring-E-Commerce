@@ -2,7 +2,7 @@ import { useState } from "react";
 import { TiShoppingCart } from "react-icons/ti";
 import ProductViewModal from "./ProductViewModal";
 import truncateString from "../../utils/truncateString";
-function ProductCard({ product }) {
+function ProductCard({ product, about = false }) {
 	const { productId, productName, image, description, quantity, price, discount, specialPrice } =
 		product;
 	const [openProductViewModal, setOpenProductViewModal] = useState(false);
@@ -12,8 +12,10 @@ function ProductCard({ product }) {
 	const isAvailable = quantity !== 0 ? true : false;
 
 	const handleViewProduct = (product) => {
-		setSelectedViewProduct(product);
-		setOpenProductViewModal(true);
+		if (!about) {
+			setSelectedViewProduct(product);
+			setOpenProductViewModal(true);
+		}
 	};
 	return (
 		<div className="rounded-lg shadow-xl overflow-hidden transition-shadow duration-300">
@@ -43,36 +45,38 @@ function ProductCard({ product }) {
 					<p className="text-gray-600 text-sm">{truncateString(description, 100)}</p>
 				</div>
 
-				<div className="flex items-center justify-between">
-					{specialPrice ? (
-						<div>
+				{!about && (
+					<div className="flex items-center justify-between">
+						{specialPrice ? (
+							<div>
+								<div className="flex flex-col">
+									<span className="text-gray-400 line-through">${Number(price).toFixed(2)}</span>
+									<span className="text-l font-semibold text-slate-700">
+										${Number(specialPrice).toFixed(2)}
+									</span>
+								</div>
+								<div className="flex flex-col"></div>
+							</div>
+						) : (
 							<div className="flex flex-col">
-								<span className="text-gray-400 line-through">${Number(price).toFixed(2)}</span>
-								<span className="text-l font-semibold text-slate-700">
-									${Number(specialPrice).toFixed(2)}
+								<span className="text-l font-bold text-slate-700">
+									{"   "}${Number(price).toFixed(2)}
 								</span>
 							</div>
-							<div className="flex flex-col"></div>
-						</div>
-					) : (
-						<div className="flex flex-col">
-							<span className="text-l font-bold text-slate-700">
-								{"   "}${Number(price).toFixed(2)}
-							</span>
-						</div>
-					)}
-					<button
-						disable={isAvailable.toString() || buttonLoader}
-						onClick={() => {}}
-						className={`bg-blue-500 ${
-							isAvailable ? "opacity-100 hover:bg-blue-600 cursor-pointer" : "opacity-70"
-						} 
+						)}
+						<button
+							disable={isAvailable.toString() || buttonLoader}
+							onClick={() => {}}
+							className={`bg-blue-500 ${
+								isAvailable ? "opacity-100 hover:bg-blue-600 cursor-pointer" : "opacity-70"
+							} 
                     text-white py-2 px-4 rounded-lg items-center transition-colors duration-300 w-36 flex justify-center `}
-					>
-						<TiShoppingCart className="mr-2" />
-						{isAvailable ? "Add to Cart" : "Out of stock"}
-					</button>
-				</div>
+						>
+							<TiShoppingCart className="mr-2" />
+							{isAvailable ? "Add to Cart" : "Out of stock"}
+						</button>
+					</div>
+				)}
 			</div>
 			<ProductViewModal
 				isOpen={openProductViewModal}

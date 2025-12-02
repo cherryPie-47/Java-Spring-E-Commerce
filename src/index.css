@@ -1,3 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+	--color-banner-1: #fdc200;
+	--color-banner-2: #ff2c2c;
+	--color-banner-3: #21ad61;
+	--color-banner-4: #723da6;
+
+	--background-image-custom-gradient: linear-gradient(to right, #111827, #1f2937);
+
+	--background-image-button-gradient: linear-gradient(to right, #7e22ce, #ef4444);
+}
