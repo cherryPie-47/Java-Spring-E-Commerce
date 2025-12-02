@@ -3,12 +3,14 @@ import { FaStore } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { LuShoppingCart } from "react-icons/lu";
 import { FaSignInAlt } from "react-icons/fa";
-import { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { IoIosMenu } from "react-icons/io";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 function Navbar() {
 	const pathname = useLocation().pathname;
 	const [navbarOpen, setNavbarOpen] = useState(false);
+	const totalCartItems = useSelector((state) => state.carts?.cart?.length) || 0;
 	return (
 		<div className="h-[70px] bg-custom-gradient text-white z-50 flex items-center sticky top-0">
 			<div className="lg:px-14 sm:px-8 px-4 w-full flex justify-between">
@@ -67,7 +69,7 @@ function Navbar() {
 						>
 							<Badge
 								showZero
-								badgeContent={0}
+								badgeContent={totalCartItems}
 								color="primary"
 								overlap="circular"
 								max={9}
