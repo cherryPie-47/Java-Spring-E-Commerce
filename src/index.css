@@ -3,10 +3,14 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
+	--font-montserrat: Montserrat, sans-serif;
+
 	--color-banner-1: #fdc200;
 	--color-banner-2: #ff2c2c;
 	--color-banner-3: #21ad61;
 	--color-banner-4: #723da6;
+
+	--shadow-custom: 0 0 15px rgba(0, 0, 0, 0.3);
 
 	--background-image-custom-gradient: linear-gradient(to right, #111827, #1f2937);
 
