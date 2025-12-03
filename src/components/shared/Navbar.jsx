@@ -1,16 +1,19 @@
 import { Badge } from "@mui/material";
 import { FaStore } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LuShoppingCart } from "react-icons/lu";
 import { FaSignInAlt } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { IoIosMenu } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import UserMenu from "../UserMenu";
+
 function Navbar() {
 	const pathname = useLocation().pathname;
 	const [navbarOpen, setNavbarOpen] = useState(false);
 	const totalCartItems = useSelector((state) => state.carts?.cart?.length) || 0;
+	const { user } = useSelector((state) => state.auth);
 	return (
 		<div className="h-[70px] bg-custom-gradient text-white z-50 flex items-center sticky top-0">
 			<div className="lg:px-14 sm:px-8 px-4 w-full flex justify-between">
@@ -80,17 +83,23 @@ function Navbar() {
 						</Link>
 					</li>
 
-					<li>
-						<Link
-							className="flex items-center space-x-2 px-4 py-1.5 bg-button-gradient
+					{user && user.id ? (
+						<li className="font-semibold transition-all duration-150">
+							<UserMenu />
+						</li>
+					) : (
+						<li>
+							<Link
+								className="flex items-center space-x-2 px-4 py-1.5 bg-button-gradient
                             from-purple-600 to-red-500 text-white font-semibold rounded-md shadow-lg 
                             hover:from-purple-500 hover:to-red-400 transition duration-300 ease-in-out transform"
-							to="/login"
-						>
-							<FaSignInAlt />
-							<span>Login</span>
-						</Link>
-					</li>
+								to="/login"
+							>
+								<FaSignInAlt />
+								<span>Login</span>
+							</Link>
+						</li>
+					)}
 				</ul>
 				<button
 					onClick={() => setNavbarOpen(!navbarOpen)}

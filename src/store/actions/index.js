@@ -61,7 +61,7 @@ const fetchCategories = (queryString) => async (dispatch) => {
 
 const addToCart =
 	(data, qty = 1, toast) =>
-	async (dispatch, getState) => {
+	(dispatch, getState) => {
 		// Find the product
 		const { products } = getState().products; //getState() return the current state tree (the whole store)
 		const getProduct = products.find((product) => product.productId === data.productId);
@@ -87,7 +87,7 @@ const addToCart =
 	};
 
 const updateCartQuantity =
-	(data, amount, currQuantity, setCurrQuantity, toast) => async (dispatch, getState) => {
+	(data, amount, currQuantity, setCurrQuantity, toast) => (dispatch, getState) => {
 		const { products } = getState().products;
 		const getProduct = products.find((product) => product.productId === data.productId);
 
@@ -114,7 +114,7 @@ const updateCartQuantity =
 		}
 	};
 
-const removeItemFromCart = (data, toast) => async (dispatch, getState) => {
+const removeItemFromCart = (data, toast) => (dispatch, getState) => {
 	const { products } = getState().products;
 	const getProduct = products.find((product) => product.productId === data.productId);
 
@@ -128,4 +128,61 @@ const removeItemFromCart = (data, toast) => async (dispatch, getState) => {
 	}
 };
 
-export { fetchProducts, fetchCategories, addToCart, updateCartQuantity, removeItemFromCart };
+const authenticateSigninUser =
+	(sendData, reset, navigate, setLoader, toast) => async (dispatch) => {
+		try {
+			setLoader(true);
+			const response = await api.post("/auth/signin", sendData);
+			const { data } = response;
+
+			dispatch({
+				type: "LOGIN_USER",
+				payload: data,
+			});
+			localStorage.setItem("auth", JSON.stringify(data));
+
+			reset();
+			toast.success("Login Success");
+			navigate("/");
+		} catch (error) {
+			console.log(error);
+			toast.error(error?.response?.data?.message || "Internal Server Error");
+		} finally {
+			setLoader(false);
+		}
+	};
+
+const registerUser = (sendData, reset, navigate, setLoader, toast) => async (dispatch) => {
+	try {
+		setLoader(true);
+		const response = await api.post("/auth/signup", sendData);
+		const { data } = response;
+		reset();
+		toast.success(data?.message || "User Registered Successfully");
+		navigate("/login");
+	} catch (error) {
+		console.log(error);
+		toast.error(error?.response?.data?.message || "Internal Server Error");
+	} finally {
+		setLoader(false);
+	}
+};
+
+const logoutUser = (navigate) => (dispatch) => {
+	dispatch({
+		type: "LOGOUT_USER",
+	});
+	localStorage.removeItem("auth");
+	navigate("/login");
+};
+
+export {
+	fetchProducts,
+	fetchCategories,
+	addToCart,
+	updateCartQuantity,
+	removeItemFromCart,
+	authenticateSigninUser,
+	registerUser,
+	logoutUser,
+};
